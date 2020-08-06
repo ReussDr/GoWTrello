@@ -24,6 +24,7 @@ def get_cards_to_create(day_to_create):
              "Daily Honor": [day_to_create, daily_due],
              "Daily Adventure Board": [day_to_create, daily_due],
              "Daily Dungeon": [day_to_create, daily_due],
+             "Daily PvP Battle": [day_to_create, daily_due],
              }
     if day_to_create.weekday() == 1:
         cards["Faction Assault"] = [day_to_create, daily_due]
@@ -31,6 +32,9 @@ def get_cards_to_create(day_to_create):
         cards["Pet Rescue"] = [day_to_create, daily_due]
     if day_to_create.weekday() == 3:
         cards["Class Challenge"] = [day_to_create, daily_due]
+        cards["Update Traitstone Inventory"] = [day_to_create, daily_due]
+    if day_to_create.weekday() == 6:
+        cards["Update Honor Circle"] = [day_to_create, daily_due]
 
     beginning_of_week = day_to_create - datetime.timedelta(days=day_to_create.weekday())
     weekly_due = beginning_of_week + datetime.timedelta(days=7)
@@ -39,6 +43,8 @@ def get_cards_to_create(day_to_create):
     cards["Weekly World Event"] = [beginning_of_week, weekly_due]
     cards["Weekly Guild Donation"] = [beginning_of_week, weekly_due]
     cards["Weekly Seal Collection"] = [beginning_of_week, weekly_due]
+    cards["Weekly Shop (Troop and Event Keys)"] = [beginning_of_week, weekly_due]
+    cards["Weekly Crafting (Troops and Weapons)"] = [beginning_of_week, weekly_due]
     return cards
 
 
