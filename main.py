@@ -1,9 +1,38 @@
+import argparse
 import configparser
 import datetime
 import pytz
 import os
 import sys
 from trello import TrelloClient
+
+
+def create_arg_parser():
+    parser = argparse.ArgumentParser()
+
+    # Arguments which are applicable for the whole script / top-level args
+    parser.add_argument('--verbose', help='Common top-level parameter',
+                        action='store_true', required=False)
+
+    # Define Subparsers
+    subparsers = parser.add_subparsers(help='Desired action to perform', dest='action', required=True)
+
+    # Usual subparsers not using common options
+    parser_other = subparsers.add_parser("extra-action", help='Do something without db')
+
+    # Create parent subparser. Note `add_help=False` and creation via `argparse.`
+    parent_parser = argparse.ArgumentParser(add_help=False)
+    #parent_parser.add_argument('-p', help='add db parameter', required=True)
+
+    # Subparsers based on parent
+    parser_create = subparsers.add_parser("tasks", parents=[parent_parser],
+                                          help='Update Trello Tasks')
+    # Note: Add additional create options here
+
+    parser_update = subparsers.add_parser("inventory", parents=[parent_parser],
+                                          help='Pull and process gowdb inventory file')
+    # Note: Add additional update options here
+    return parser
 
 
 def load_config_properties():
@@ -32,18 +61,18 @@ def load_config_properties():
     return config
 
 
-def get_gow_board(client):
+def get_gow_board(client, config):
     for board in client.list_boards():
-        if board.name == "Gems of War Tasks":
+        if board.name == config['Trello Board Settings']['trello_board_id']:
             return board
-    return client.add_board("Gems of War Tasks")
+    return client.add_board(config['Trello Board Settings']['trello_board_id'])
 
 
-def get_gow_list_todo(gow_board):
+def get_gow_list_todo(gow_board, config):
     for trello_list in gow_board.list_lists():
-        if trello_list.name == "To Do":
+        if trello_list.name == config['Trello Board Settings']['trello_list_todo']:
             return trello_list
-    return gow_board.add_list("To Do")
+    return gow_board.add_list(config['Trello Board Settings']['trello_list_todo'])
 
 
 def get_cards_to_create(day_to_create):
@@ -96,46 +125,51 @@ def calculate_day():
 
 
 def main():
-    config = load_config_properties()
-    #for area in config:
-    #    print("[", area, "]")
-    #    for item in config[area]:
-    #        print(" ", item, config[area][item])
+    parser = create_arg_parser()
+    args = parser.parse_args()
+    print(args)
 
-    # Calculate the day, and retrieve a list of cards to add
-    day = calculate_day()
-    cards = get_cards_to_create(day)
-    print_cards_list(cards)
+    if args.action == "tasks":
+        config = load_config_properties()
+        #for area in config:
+        #    print("[", area, "]")
+        #    for item in config[area]:
+        #        print(" ", item, config[area][item])
 
-    # Connect to Trello Client, and get gow board and list
-    client = TrelloClient(api_key=config['Trello API Keys']['trello_api_key'],
-                          api_secret=config['Trello API Keys']['trello_api_secret'])
-    gow_board = get_gow_board(client)
+        # Calculate the day, and retrieve a list of cards to add
+        day = calculate_day()
+        cards = get_cards_to_create(day)
+        print_cards_list(cards)
 
-    # Remove cards with expired due dates, and build a list of existing cards
-    existing_cards = []
-    for card in gow_board.all_cards():
-        if card.due_date < datetime.datetime.now().astimezone():
-            card.delete()
-        else:
-            existing_cards.append(card.name)
-    #print(existing_cards)
+        # Connect to Trello Client, and get gow board and list
+        client = TrelloClient(api_key=config['Trello API Keys']['trello_api_key'],
+                              api_secret=config['Trello API Keys']['trello_api_secret'])
+        gow_board = get_gow_board(client, config)
 
-    # Get GoW to do list
-    todo_list = get_gow_list_todo(gow_board)
-    #print(todo_list)
+        # Remove cards with expired due dates, and build a list of existing cards
+        existing_cards = []
+        for card in gow_board.all_cards():
+            if card.due_date < datetime.datetime.now().astimezone():
+                card.delete()
+            else:
+                existing_cards.append(card.name)
+        #print(existing_cards)
 
-    # Add new cards, if they aren't already in the list
-    for card in cards:
-        card_name = card + " [" + str(cards[card][0]) + "]"
-        print(card_name)
-        if card_name not in existing_cards:
-            due_date = datetime.datetime.combine(cards[card][1],
-                                                 datetime.time(7, 0, 0, 0),
-                                                 pytz.UTC)
-            print(due_date)
-            todo_list.add_card(card + " [" + str(cards[card][0]) + "]",
-                               due=due_date.isoformat())
+        # Get GoW to do list
+        todo_list = get_gow_list_todo(gow_board, config)
+        #print(todo_list)
+
+        # Add new cards, if they aren't already in the list
+        for card in cards:
+            card_name = card + " [" + str(cards[card][0]) + "]"
+            print(card_name)
+            if card_name not in existing_cards:
+                due_date = datetime.datetime.combine(cards[card][1],
+                                                     datetime.time(7, 0, 0, 0),
+                                                     pytz.UTC)
+                print(due_date)
+                todo_list.add_card(card + " [" + str(cards[card][0]) + "]",
+                                   due=due_date.isoformat())
 
 
 if __name__ == '__main__':
