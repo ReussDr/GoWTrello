@@ -1,9 +1,11 @@
 import argparse
 import configparser
 import datetime
+import json
 import pytz
 import os
 import sys
+import wget
 from trello import TrelloClient
 
 
@@ -129,8 +131,9 @@ def main():
     args = parser.parse_args()
     print(args)
 
+    config = load_config_properties()
+
     if args.action == "tasks":
-        config = load_config_properties()
         #for area in config:
         #    print("[", area, "]")
         #    for item in config[area]:
@@ -170,6 +173,21 @@ def main():
                 print(due_date)
                 todo_list.add_card(card + " [" + str(cards[card][0]) + "]",
                                    due=due_date.isoformat())
+
+    if args.action == "inventory":
+        os.remove('inventory.json')
+        wget.download(config['GoWDB Settings']['json_inventory'], 'inventory.json', bar=None)
+        with open("inventory.json", "r") as read_file:
+            print("Converting JSON encoded data into Python dictionary")
+            developer = json.load(read_file)
+
+            print("Decoded JSON Data From File")
+            for key, value in developer.items():
+                print(key, ":", value)
+                print()
+            print("Done reading json file")
+            for stone in developer['traitstones']:
+                print(stone)
 
 
 if __name__ == '__main__':
