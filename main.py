@@ -4,10 +4,27 @@ import datetime
 import json
 import pytz
 import os
+import shutil
 import sys
 import wget
 from trello import TrelloClient
 
+
+class Traitstones:
+    def __init__(self):
+        self._traitstones = {
+            'Minor Water Traitstone': 0,
+        }
+
+    def add_traitstone(self, name, count):
+        if name not in self._traitstones:
+            print("Error:", name, "not a valid traitstone type")
+        else:
+            self._traitstones[name] += count
+            print(name, count, self._traitstones[name])
+
+    def print(self):
+        print(self._traitstones)
 
 def create_arg_parser():
     parser = argparse.ArgumentParser()
@@ -33,6 +50,8 @@ def create_arg_parser():
 
     parser_update = subparsers.add_parser("inventory", parents=[parent_parser],
                                           help='Pull and process gowdb inventory file')
+    parser_update.add_argument('-no_update', action='store_true',
+                               help="Don't update the file from gowdb.com")
     # Note: Add additional update options here
     return parser
 
@@ -126,6 +145,42 @@ def calculate_day():
     return day_to_populate
 
 
+def update_tasks(config):
+    day = calculate_day()
+    cards = get_cards_to_create(day)
+    print_cards_list(cards)
+
+    # Connect to Trello Client, and get gow board and list
+    client = TrelloClient(api_key=config['Trello API Keys']['trello_api_key'],
+                          api_secret=config['Trello API Keys']['trello_api_secret'])
+    gow_board = get_gow_board(client, config)
+
+    # Remove cards with expired due dates, and build a list of existing cards
+    existing_cards = []
+    for card in gow_board.all_cards():
+        if card.due_date < datetime.datetime.now().astimezone():
+            card.delete()
+        else:
+            existing_cards.append(card.name)
+    # print(existing_cards)
+
+    # Get GoW to do list
+    todo_list = get_gow_list_todo(gow_board, config)
+    # print(todo_list)
+
+    # Add new cards, if they aren't already in the list
+    for card in cards:
+        card_name = card + " [" + str(cards[card][0]) + "]"
+        print(card_name)
+        if card_name not in existing_cards:
+            due_date = datetime.datetime.combine(cards[card][1],
+                                                 datetime.time(7, 0, 0, 0),
+                                                 pytz.UTC)
+            print(due_date)
+            todo_list.add_card(card + " [" + str(cards[card][0]) + "]",
+                               due=due_date.isoformat())
+
+
 def main():
     parser = create_arg_parser()
     args = parser.parse_args()
@@ -134,49 +189,14 @@ def main():
     config = load_config_properties()
 
     if args.action == "tasks":
-        #for area in config:
-        #    print("[", area, "]")
-        #    for item in config[area]:
-        #        print(" ", item, config[area][item])
-
-        # Calculate the day, and retrieve a list of cards to add
-        day = calculate_day()
-        cards = get_cards_to_create(day)
-        print_cards_list(cards)
-
-        # Connect to Trello Client, and get gow board and list
-        client = TrelloClient(api_key=config['Trello API Keys']['trello_api_key'],
-                              api_secret=config['Trello API Keys']['trello_api_secret'])
-        gow_board = get_gow_board(client, config)
-
-        # Remove cards with expired due dates, and build a list of existing cards
-        existing_cards = []
-        for card in gow_board.all_cards():
-            if card.due_date < datetime.datetime.now().astimezone():
-                card.delete()
-            else:
-                existing_cards.append(card.name)
-        #print(existing_cards)
-
-        # Get GoW to do list
-        todo_list = get_gow_list_todo(gow_board, config)
-        #print(todo_list)
-
-        # Add new cards, if they aren't already in the list
-        for card in cards:
-            card_name = card + " [" + str(cards[card][0]) + "]"
-            print(card_name)
-            if card_name not in existing_cards:
-                due_date = datetime.datetime.combine(cards[card][1],
-                                                     datetime.time(7, 0, 0, 0),
-                                                     pytz.UTC)
-                print(due_date)
-                todo_list.add_card(card + " [" + str(cards[card][0]) + "]",
-                                   due=due_date.isoformat())
+        update_tasks(config)
 
     if args.action == "inventory":
-        os.remove('inventory.json')
-        wget.download(config['GoWDB Settings']['json_inventory'], 'inventory.json', bar=None)
+        if not args.no_update:
+            if os.path.exists('inventory.json'):
+                shutil.copyfile('inventory.json', 'inventory.json_backup')
+                os.remove('inventory.json')
+            wget.download(config['GoWDB Settings']['json_inventory'], 'inventory.json', bar=None)
         with open("inventory.json", "r") as read_file:
             print("Converting JSON encoded data into Python dictionary")
             developer = json.load(read_file)
@@ -187,8 +207,12 @@ def main():
                 print()
             print("Done reading json file")
             for stone in developer['traitstones']:
-                print(stone)
-
+                print(stone['name'], stone['count'])
+            ts = Traitstones()
+            ts.add_traitstone("Minor Water Traitstone", 5)
+            ts.add_traitstone("Minor Water Traitstone", 10)
+            ts.add_traitstone("Arcane Mountain Traitstone", 1)
+            ts.print()
 
 if __name__ == '__main__':
     sys.exit(main())
