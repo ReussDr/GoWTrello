@@ -1,27 +1,42 @@
-#TODO Move rarity lookup to common
-RARITY_LOOKUP = ["Zero",
-                 "Common",
-                 "Rare",
-                 "Ultra-Rare",
-                 "Epic",
-                 "Legendary",
-                 "Mythic"]
+"""
+Module for Troop class (for Gems of War Data)
+"""
 
+import gems_common
 
 class Troop:
+    """
+    Troop class to hold data about Gems of War Troops
+    """
     def __init__(self, name, count, base_rarity, ascended_rarity, kingdom, traitcount, level):
-        self._name = name
-        self._count = count
-        self._base_rarity = base_rarity
-        self._ascended_rarity = ascended_rarity
-        self._kingdom = kingdom
-        self._traitcount = traitcount
-        self._level = level
-        #TODO Faction
-        #self._faction = faction
+        self._vals = {}
+        self._vals['name'] = name
+        self._vals['count'] = count
+        self._vals['base_rarity'] = base_rarity
+        self._vals['ascended_rarity'] = ascended_rarity
+        self._vals['traitcount'] = traitcount
+        self._vals['level'] = level
+        self._vals['kingdom'] = ""
+        self._vals['faction'] = ""
+
+        if gems_common.is_kingdom(kingdom):
+            self._vals['kingdom'] = kingdom
+        elif gems_common.is_faction(kingdom):
+            self._vals['faction'] = kingdom
+            self._vals['kingdom'] = gems_common.lookup_kingdom_from_faction(kingdom)
+        elif gems_common.is_non_kingdom(kingdom):
+            self._vals['kingdom'] = kingdom
+        else:
+            print("Error: Couldn't find kingdom:", kingdom)
 
     @classmethod
     def gen_troop_from_json(cls, json_record):
+        """
+        Alternate constructor.  Allows you pass in a json_record, and it'll parse all the data out
+
+        :param json_record: The json record (from gowdb inventory)
+        :return:            The constructed Troop object
+        """
         if 'count' not in json_record:
             json_record['count'] = 0
         if 'traitCount' not in json_record:
@@ -42,19 +57,35 @@ class Troop:
 
     @staticmethod
     def get_csv_header():
-        return "Name,Level,Count,Traits,Kingdom,BaseRarity,AscendedRarity"
+        """
+        Returns a string which can be written to a csv file (creates a header row)
+        """
+        return "Name,Level,Count,Traits,Kingdom,Faction,BaseRarity,AscendedRarity"
 
     def get_csv_record(self):
-        return self._name + "," + str(self._level) + "," + str(self._count) + ","\
-               + str(self._traitcount) + "," + self._kingdom + ","\
-               + str(self._base_rarity) + "," + str(self._ascended_rarity)
+        """
+        Returns a string which can be written to a csv file (creates a row for this troop)
+        """
+        return self._vals['name'] + "," + str(self._vals['level']) + ","\
+               + str(self._vals['count']) + "," + str(self._vals['traitcount']) + ","\
+               + self._vals['kingdom'] + "," + self._vals['faction'] + ","\
+               + str(self._vals['base_rarity']) + "," + str(self._vals['ascended_rarity'])
 
     def print(self):
+        """
+        Prints Troop information
+        """
         # TODO Add a better print function
-        print(self._name)
+        print(self._vals['name'])
 
     @staticmethod
     def print_troop_csv(csv_file_name, troop_array):
+        """
+        Helper function to create a full csv file with troop information
+
+        :param csv_file_name: filename for the csv file
+        :param troop_array:   array of troops to print
+        """
         with open(csv_file_name, "w") as csv_file:
             csv_file.write(Troop.get_csv_header())
             csv_file.write("\n")
