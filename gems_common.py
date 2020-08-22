@@ -2,6 +2,9 @@
 Common helper functions for interpreting Gems of War Data
 """
 
+TROOPS_REQ_FOR_ASCENSION = [5, 10, 25, 50, 100]
+PETS_REQ_FOR_ASCENSION = [5, 10, 15]
+
 RARITY_LOOKUP = ["Zero",
                  "Common",
                  "Rare",
@@ -97,3 +100,33 @@ def lookup_kingdom_from_faction(name):
             return kingdom
     print("Error: Couldn't find Kingdom for faction:", name)
     return ""
+
+
+def troops_needed_to_mythic(base_rarity, current_rarity, current_count):
+    """
+    Calculate troops needed to ascend to mythic
+
+    :param name:           name of the Troop
+    :param base_rarity:    Original Ascension of the Troop
+    :param current_rarity: Current Ascension Level
+    :param current_count:  Current number of that troop we have
+    :return:               Number of Troops needed to Ascend to Mythic
+    """
+    # First, calculate the total number of that troop we would need if we had 0
+    total_needed = 1
+    next_iter = 0
+    for i in range(base_rarity, 6):
+        total_needed += TROOPS_REQ_FOR_ASCENSION[next_iter]
+        next_iter += 1
+
+    # Next, calculate how many troops we've already spent on ascension
+    next_iter = 0
+    total_have = current_count
+    for i in range(base_rarity, current_rarity):
+        total_have += TROOPS_REQ_FOR_ASCENSION[next_iter]
+        next_iter += 1
+
+    #
+    if total_needed <= total_have:
+        return 0
+    return total_needed - total_have

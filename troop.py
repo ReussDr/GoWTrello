@@ -13,7 +13,7 @@ class Troop:
         self._vals['name'] = name
         self._vals['count'] = count
         self._vals['base_rarity'] = base_rarity
-        self._vals['ascended_rarity'] = ascended_rarity
+        self._vals['curr_rarity'] = ascended_rarity
         self._vals['traitcount'] = traitcount
         self._vals['level'] = level
         self._vals['kingdom'] = ""
@@ -28,6 +28,9 @@ class Troop:
             self._vals['kingdom'] = kingdom
         else:
             print("Error: Couldn't find kingdom:", kingdom)
+        self._vals['count_needed'] = gems_common.troops_needed_to_mythic(self._vals['base_rarity'],
+                                                                         self._vals['curr_rarity'],
+                                                                         self._vals['count'])
 
     @classmethod
     def gen_troop_from_json(cls, json_record):
@@ -60,16 +63,17 @@ class Troop:
         """
         Returns a string which can be written to a csv file (creates a header row)
         """
-        return "Name,Level,Count,Traits,Kingdom,Faction,BaseRarity,AscendedRarity"
+        return "Name,Level,Count,Needed,Traits,Kingdom,Faction,BaseRarity,AscendedRarity"
 
     def get_csv_record(self):
         """
         Returns a string which can be written to a csv file (creates a row for this troop)
         """
         return self._vals['name'] + "," + str(self._vals['level']) + ","\
-               + str(self._vals['count']) + "," + str(self._vals['traitcount']) + ","\
+               + str(self._vals['count']) + "," + str(self._vals['count_needed']) + ","\
+               + str(self._vals['traitcount']) + ","\
                + self._vals['kingdom'] + "," + self._vals['faction'] + ","\
-               + str(self._vals['base_rarity']) + "," + str(self._vals['ascended_rarity'])
+               + str(self._vals['base_rarity']) + "," + str(self._vals['curr_rarity'])
 
     def print(self):
         """
