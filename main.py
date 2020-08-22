@@ -9,10 +9,9 @@ import sys
 import wget
 from trello import TrelloClient
 import Pet
+import Traitstones
+import troop
 
-#PETS_RESCUEABLE = ["Mini Mimic"]
-#PETS_FACTION = []
-#PETS_COSMETIC = ['X-Ball']
 RARITY_LOOKUP = ["Zero",
                  "Common",
                  "Rare",
@@ -20,22 +19,6 @@ RARITY_LOOKUP = ["Zero",
                  "Epic",
                  "Legendary",
                  "Mythic"]
-
-class Traitstones:
-    def __init__(self):
-        self._traitstones = {
-            'Minor Water Traitstone': 0,
-        }
-
-    def add_traitstone(self, name, count):
-        if name not in self._traitstones:
-            print("Error:", name, "not a valid traitstone type")
-        else:
-            self._traitstones[name] += count
-            print(name, count, self._traitstones[name])
-
-    def print(self):
-        print(self._traitstones)
 
 def create_arg_parser():
     parser = argparse.ArgumentParser()
@@ -63,6 +46,10 @@ def create_arg_parser():
                                           help='Pull and process gowdb inventory file')
     parser_update.add_argument('-no_update', action='store_true',
                                help="Don't update the file from gowdb.com")
+    parser_update.add_argument('-pets', action='store_true')
+    parser_update.add_argument('-troops', action='store_true')
+
+
     # Note: Add additional update options here
     return parser
 
@@ -214,44 +201,51 @@ def main():
 
             print("Decoded JSON Data From File")
             for key, value in developer.items():
-                print(key, ":", value)
-                print()
+                #print(key, ":", value)
+                #print()
+                pass
             print("Done reading json file")
+            ts = Traitstones.Traitstones()
             for stone in developer['traitstones']:
-                print(stone['name'], stone['count'])
-            ts = Traitstones()
-            ts.add_traitstone("Minor Water Traitstone", 5)
-            ts.add_traitstone("Minor Water Traitstone", 10)
-            ts.add_traitstone("Arcane Mountain Traitstone", 1)
-            ts.print()
+                if 'count' not in stone:
+                    stone['count'] = 0
+                ts.add_traitstone(stone['name'], stone['count'])
+            ts.print_csv("traitstones.csv")
+            print("Updated Traitstone.csv")
 
-            pet_rarity = {}
-            pets_to_ascend = [0, 0, 0, 5, 10, 15, 1000]
-            for pet in developer['pets']:
-                print(pet)
-                #print(pet['name'], pet['ascensionRarityId'])
-                if 'count' in pet:
-                    #print(pet['count'])
-                    #print(pet)
-                    if pet['count'] > pets_to_ascend[pet['ascensionRarityId']]:
-                        print("Ready to Ascend", pet['name'])
-                if pet['ascensionRarityId'] not in pet_rarity:
-                    pet_rarity[pet['ascensionRarityId']] = []
-                pet_rarity[pet['ascensionRarityId']].append(pet['name'])
-            print(pet_rarity)
-                    #print(pet)
-            for rarity in sorted(pet_rarity):
-                print(RARITY_LOOKUP[rarity])
-                for pet in pet_rarity[rarity]:
-                    if pet in PETS_COSMETIC:
-                        pass
-                    elif pet in PETS_RESCUEABLE:
-                        pass
-                    elif pet in PETS_FACTION:
-                        pass
-                    else:
-                        print("Unknown Pet Type:", pet)
+            if args.pets:
+                pet_rarity = {}
+                pets_to_ascend = [0, 0, 0, 5, 10, 15, 1000]
+                for pet in developer['pets']:
+                    print(pet)
+                    #print(pet['name'], pet['ascensionRarityId'])
+                    if 'count' in pet:
+                        #print(pet['count'])
+                        #print(pet)
+                        if pet['count'] > pets_to_ascend[pet['ascensionRarityId']]:
+                            print("Ready to Ascend", pet['name'])
+                    if pet['ascensionRarityId'] not in pet_rarity:
+                        pet_rarity[pet['ascensionRarityId']] = []
+                    pet_rarity[pet['ascensionRarityId']].append(pet['name'])
+                print(pet_rarity)
+                        #print(pet)
+                for rarity in sorted(pet_rarity):
+                    print(RARITY_LOOKUP[rarity])
+                    for pet in pet_rarity[rarity]:
+                        if pet in PETS_COSMETIC:
+                            pass
+                        elif pet in PETS_RESCUEABLE:
+                            pass
+                        elif pet in PETS_FACTION:
+                            pass
+                        else:
+                            print("Unknown Pet Type:", pet)
 
+            troops = []
+            if args.troops:
+                for jsontroop in developer['troops']:
+                    troops.append(troop.Troop.gen_troop_from_json(jsontroop))
+            troop.Troop.print_troop_csv("troops.csv", troops)
 
 if __name__ == '__main__':
     sys.exit(main())
