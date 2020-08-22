@@ -2,23 +2,17 @@ import argparse
 import configparser
 import datetime
 import json
-import pytz
 import os
 import shutil
 import sys
+import pytz
 import wget
 from trello import TrelloClient
 import Pet
-import Traitstones
+import kingdom_stats
+import traitstones
 import troop
 
-RARITY_LOOKUP = ["Zero",
-                 "Common",
-                 "Rare",
-                 "Ultra-Rare",
-                 "Epic",
-                 "Legendary",
-                 "Mythic"]
 
 def create_arg_parser():
     parser = argparse.ArgumentParser()
@@ -205,7 +199,7 @@ def main():
                 #print()
                 pass
             print("Done reading json file")
-            ts = Traitstones.Traitstones()
+            ts = traitstones.Traitstones()
             for stone in developer['traitstones']:
                 if 'count' not in stone:
                     stone['count'] = 0
@@ -229,23 +223,31 @@ def main():
                     pet_rarity[pet['ascensionRarityId']].append(pet['name'])
                 print(pet_rarity)
                         #print(pet)
-                for rarity in sorted(pet_rarity):
-                    print(RARITY_LOOKUP[rarity])
-                    for pet in pet_rarity[rarity]:
-                        if pet in PETS_COSMETIC:
-                            pass
-                        elif pet in PETS_RESCUEABLE:
-                            pass
-                        elif pet in PETS_FACTION:
-                            pass
-                        else:
-                            print("Unknown Pet Type:", pet)
+                #for rarity in sorted(pet_rarity):
+                #    print(RARITY_LOOKUP[rarity])
+                #    for pet in pet_rarity[rarity]:
+                #        if pet in PETS_COSMETIC:
+                #            pass
+                #        elif pet in PETS_RESCUEABLE:
+                #            pass
+                #        elif pet in PETS_FACTION:
+                #            pass
+                #        else:
+                #            print("Unknown Pet Type:", pet)
 
             troops = []
             if args.troops:
                 for jsontroop in developer['troops']:
                     troops.append(troop.Troop.gen_troop_from_json(jsontroop))
             troop.Troop.print_troop_csv("troops.csv", troops)
+
+            stats = kingdom_stats.KingdomStats()
+            for troop_iter in troops:
+                stats.add_troop(troop_iter)
+            stats.print_csv("kingdom_stats.csv")
+
+
+
 
 if __name__ == '__main__':
     sys.exit(main())

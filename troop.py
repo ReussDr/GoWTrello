@@ -96,3 +96,39 @@ class Troop:
             for troop in troop_array:
                 csv_file.write(troop.get_csv_record())
                 csv_file.write("\n")
+
+    def get_kingdom(self):
+        """
+        Retrieve the kingdom for this troop
+        """
+        return self._vals['kingdom']
+
+    def get_faction(self):
+        """
+        Retrieve the faction for this troop
+        """
+        return self._vals['faction']
+
+    def get_base_rarity(self):
+        """
+        Retrieve the base rarity for this troop
+        """
+        return self._vals['base_rarity']
+
+    def get_curr_rarity(self):
+        """
+        Retrieve the current rarity for this troop
+        """
+        return self._vals['curr_rarity']
+
+    def get_traitcount(self):
+        """
+        Retrieve the trait count for this troop
+        """
+        return self._vals['traitcount']
+
+    def get_count(self):
+        """
+        Retrieve the count for this troop
+        """
+        return self._vals['count']

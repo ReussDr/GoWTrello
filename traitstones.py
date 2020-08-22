@@ -1,4 +1,11 @@
+"""
+Class to manage Traitstone information (Gems of War)
+"""
+
 class Traitstones:
+    """
+    Class for managing Traitstone information (Gems of War)
+    """
     def __init__(self):
         self._traitstones = {
             'Minor Water Traitstone': 0,
@@ -44,15 +51,27 @@ class Traitstones:
         }
 
     def add_traitstone(self, name, count):
+        """
+        Add a traitstone
+        :param name:  name of the Traitstone
+        :param count: count of the Traitstones to add
+        """
         if name not in self._traitstones:
             print("Error:", name, "not a valid traitstone type")
         else:
             self._traitstones[name] += count
 
     def print(self):
+        """
+        Print the Traitstones information
+        """
         print(self._traitstones)
 
     def print_csv(self, csv_file_name):
+        """
+        Print the Traitstones information to a csv file
+        :param csv_file_name: name of the csv file
+        """
         with open(csv_file_name, "w") as csv_file:
             for stone in self._traitstones:
                 csv_file.write(stone + ",")

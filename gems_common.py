@@ -114,19 +114,15 @@ def troops_needed_to_mythic(base_rarity, current_rarity, current_count):
     """
     # First, calculate the total number of that troop we would need if we had 0
     total_needed = 1
-    next_iter = 0
-    for i in range(base_rarity, 6):
-        total_needed += TROOPS_REQ_FOR_ASCENSION[next_iter]
-        next_iter += 1
+    for i in range(0, 6 - base_rarity):
+        total_needed += TROOPS_REQ_FOR_ASCENSION[i]
 
     # Next, calculate how many troops we've already spent on ascension
-    next_iter = 0
     total_have = current_count
-    for i in range(base_rarity, current_rarity):
-        total_have += TROOPS_REQ_FOR_ASCENSION[next_iter]
-        next_iter += 1
+    for i in range(0, current_rarity - base_rarity):
+        total_have += TROOPS_REQ_FOR_ASCENSION[i]
 
-    #
+    # If we have more than we need, return 0, otherwise subtract and return
     if total_needed <= total_have:
         return 0
     return total_needed - total_have
