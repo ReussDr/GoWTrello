@@ -8,7 +8,7 @@ import sys
 import pytz
 import wget
 from trello import TrelloClient
-import Pet
+import pet
 import kingdom_stats
 import traitstones
 import troop
@@ -205,48 +205,23 @@ def main():
                     stone['count'] = 0
                 ts.add_traitstone(stone['name'], stone['count'])
             ts.print_csv("traitstones.csv")
-            print("Updated Traitstone.csv")
 
+            pets = []
             if args.pets:
-                pet_rarity = {}
-                pets_to_ascend = [0, 0, 0, 5, 10, 15, 1000]
-                for pet in developer['pets']:
-                    print(pet)
-                    #print(pet['name'], pet['ascensionRarityId'])
-                    if 'count' in pet:
-                        #print(pet['count'])
-                        #print(pet)
-                        if pet['count'] > pets_to_ascend[pet['ascensionRarityId']]:
-                            print("Ready to Ascend", pet['name'])
-                    if pet['ascensionRarityId'] not in pet_rarity:
-                        pet_rarity[pet['ascensionRarityId']] = []
-                    pet_rarity[pet['ascensionRarityId']].append(pet['name'])
-                print(pet_rarity)
-                        #print(pet)
-                #for rarity in sorted(pet_rarity):
-                #    print(RARITY_LOOKUP[rarity])
-                #    for pet in pet_rarity[rarity]:
-                #        if pet in PETS_COSMETIC:
-                #            pass
-                #        elif pet in PETS_RESCUEABLE:
-                #            pass
-                #        elif pet in PETS_FACTION:
-                #            pass
-                #        else:
-                #            print("Unknown Pet Type:", pet)
+                for jsonpet in developer['pets']:
+                    pets.append(pet.Pet.gen_pet_from_json(jsonpet))
+                pet.Pet.print_pet_csv("pets.csv", pets)
 
             troops = []
             if args.troops:
                 for jsontroop in developer['troops']:
                     troops.append(troop.Troop.gen_troop_from_json(jsontroop))
-            troop.Troop.print_troop_csv("troops.csv", troops)
+                troop.Troop.print_troop_csv("troops.csv", troops)
 
             stats = kingdom_stats.KingdomStats()
             for troop_iter in troops:
                 stats.add_troop(troop_iter)
             stats.print_csv("kingdom_stats.csv")
-
-
 
 
 if __name__ == '__main__':

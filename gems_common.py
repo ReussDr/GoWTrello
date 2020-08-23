@@ -126,3 +126,28 @@ def troops_needed_to_mythic(base_rarity, current_rarity, current_count):
     if total_needed <= total_have:
         return 0
     return total_needed - total_have
+
+def pets_needed_to_mythic(base_rarity, current_rarity, current_count):
+    """
+    Calculate troops needed to ascend to mythic
+
+    :param name:           name of the Pet
+    :param base_rarity:    Original Ascension of the Pet
+    :param current_rarity: Current Ascension Level
+    :param current_count:  Current number of that pet we have
+    :return:               Number of Pets needed to Ascend to Mythic
+    """
+    # First, calculate the total number of that troop we would need if we had 0
+    total_needed = 1
+    for i in range(0, 6 - base_rarity):
+        total_needed += PETS_REQ_FOR_ASCENSION[i]
+
+    # Next, calculate how many troops we've already spent on ascension
+    total_have = current_count
+    for i in range(0, current_rarity - base_rarity):
+        total_have += PETS_REQ_FOR_ASCENSION[i]
+
+    # If we have more than we need, return 0, otherwise subtract and return
+    if total_needed <= total_have:
+        return 0
+    return total_needed - total_have

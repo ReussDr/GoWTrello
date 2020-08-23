@@ -58,8 +58,8 @@ class KingdomStats:
         :param csv_file_name: name of the csv file
         """
         with open(csv_file_name, "w") as csv_file:
-            csv_file.write("Kingdom,Faction,Mythic,Total Troops,Owned Troops,3x Traited Troops,Mythic Troops,")
-            csv_file.write("Faction 3x Traited Troops,Faction Mythic Troops\n")
+            csv_file.write("Kingdom,Faction,Mythic,Total Troops,Owned Troops,3x Traited Troops,")
+            csv_file.write("Mythic Troops,Faction 3x Traited Troops,Faction Mythic Troops\n")
             for kingdom in self._totals:
                 csv_file.write(kingdom + ",")
                 csv_file.write(self._totals[kingdom]['faction'] + ",")
