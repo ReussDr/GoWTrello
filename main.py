@@ -8,6 +8,8 @@ import sys
 import pytz
 import wget
 from trello import TrelloClient
+import gow_class
+import gow_weapon
 import pet
 import kingdom_stats
 import traitstones
@@ -22,10 +24,11 @@ def create_arg_parser():
                         action='store_true', required=False)
 
     # Define Subparsers
-    subparsers = parser.add_subparsers(help='Desired action to perform', dest='action', required=True)
+    subparsers = parser.add_subparsers(help='Desired action to perform',
+                                       dest='action', required=True)
 
     # Usual subparsers not using common options
-    parser_other = subparsers.add_parser("extra-action", help='Do something without db')
+    # parser_other = subparsers.add_parser("extra-action", help='Do something without db')
 
     # Create parent subparser. Note `add_help=False` and creation via `argparse.`
     parent_parser = argparse.ArgumentParser(add_help=False)
@@ -40,8 +43,6 @@ def create_arg_parser():
                                           help='Pull and process gowdb inventory file')
     parser_update.add_argument('-no_update', action='store_true',
                                help="Don't update the file from gowdb.com")
-    parser_update.add_argument('-pets', action='store_true')
-    parser_update.add_argument('-troops', action='store_true')
 
 
     # Note: Add additional update options here
@@ -194,11 +195,6 @@ def main():
             developer = json.load(read_file)
 
             print("Decoded JSON Data From File")
-            for key, value in developer.items():
-                #print(key, ":", value)
-                #print()
-                pass
-            print("Done reading json file")
             ts = traitstones.Traitstones()
             for stone in developer['traitstones']:
                 if 'count' not in stone:
@@ -207,16 +203,26 @@ def main():
             ts.print_csv("traitstones.csv")
 
             pets = []
-            if args.pets:
-                for jsonpet in developer['pets']:
-                    pets.append(pet.Pet.gen_pet_from_json(jsonpet))
-                pet.Pet.print_pet_csv("pets.csv", pets)
+            for jsonpet in developer['pets']:
+                pets.append(pet.Pet.gen_pet_from_json(jsonpet))
+            pet.Pet.print_pet_csv("pets.csv", pets)
 
             troops = []
-            if args.troops:
-                for jsontroop in developer['troops']:
-                    troops.append(troop.Troop.gen_troop_from_json(jsontroop))
-                troop.Troop.print_troop_csv("troops.csv", troops)
+            for jsontroop in developer['troops']:
+                troops.append(troop.Troop.gen_troop_from_json(jsontroop))
+            troop.Troop.print_troop_csv("troops.csv", troops)
+
+            classes = []
+            for jsonclass in developer['classes']:
+                classes.append(gow_class.Class.gen_class_from_json(jsonclass))
+            gow_class.Class.print_class_csv("classes.csv", classes)
+
+            weapons = []
+            for jsonweapon in developer['weapons']:
+                weapons.append(gow_weapon.Weapon.gen_weapon_from_json(jsonweapon))
+            gow_weapon.Weapon.print_weapon_csv("weapons.csv", weapons)
+
+            #TODO Max Levels based on pulled stats
 
             stats = kingdom_stats.KingdomStats()
             for troop_iter in troops:
