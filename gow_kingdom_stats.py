@@ -1,7 +1,7 @@
 """
 A class for accumulating statistics about Kingdoms
 """
-import gems_common
+import gow_common
 
 
 class KingdomStats:
@@ -10,7 +10,7 @@ class KingdomStats:
     """
     def __init__(self):
         # Start with a dictionary of all the Kingdoms just to make things easier
-        self._totals = gems_common.KINGDOM_FACTION_MAP
+        self._totals = gow_common.KINGDOM_FACTION_MAP
         for kingdom in self._totals:
             faction = self._totals[kingdom]
             self._totals[kingdom] = {}
@@ -33,7 +33,7 @@ class KingdomStats:
         kingdom = troop.get_kingdom()
 
         # If it's not a Kingdom Proper, return
-        if gems_common.is_non_kingdom(kingdom):
+        if gow_common.is_non_kingdom(kingdom):
             return
 
         self._totals[kingdom]['total_troops'] += 1

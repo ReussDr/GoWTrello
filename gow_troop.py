@@ -2,7 +2,7 @@
 Module for Troop class (for Gems of War Data)
 """
 
-import gems_common
+import gow_common
 
 class Troop:
     """
@@ -19,18 +19,18 @@ class Troop:
         self._vals['kingdom'] = ""
         self._vals['faction'] = ""
 
-        if gems_common.is_kingdom(kingdom):
+        if gow_common.is_kingdom(kingdom):
             self._vals['kingdom'] = kingdom
-        elif gems_common.is_faction(kingdom):
+        elif gow_common.is_faction(kingdom):
             self._vals['faction'] = kingdom
-            self._vals['kingdom'] = gems_common.lookup_kingdom_from_faction(kingdom)
-        elif gems_common.is_non_kingdom(kingdom):
+            self._vals['kingdom'] = gow_common.lookup_kingdom_from_faction(kingdom)
+        elif gow_common.is_non_kingdom(kingdom):
             self._vals['kingdom'] = kingdom
         else:
             print("Error: Couldn't find kingdom:", kingdom)
-        self._vals['count_needed'] = gems_common.troops_needed_to_mythic(self._vals['base_rarity'],
-                                                                         self._vals['curr_rarity'],
-                                                                         self._vals['count'])
+        self._vals['count_needed'] = gow_common.troops_needed_to_mythic(self._vals['base_rarity'],
+                                                                        self._vals['curr_rarity'],
+                                                                        self._vals['count'])
 
     @classmethod
     def gen_troop_from_json(cls, json_record):

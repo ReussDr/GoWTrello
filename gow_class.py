@@ -2,7 +2,7 @@
 Module for Class class (for Gems of War Data)
 """
 
-import gems_common
+import gow_common
 
 class Class:
     """
@@ -17,7 +17,7 @@ class Class:
         self._vals['kingdom'] = ""
 
         # Classes all belong to Kingdoms proper, so if we can't find it something is wrong
-        if gems_common.is_kingdom(kingdom):
+        if gow_common.is_kingdom(kingdom):
             self._vals['kingdom'] = kingdom
         else:
             print("Error: Couldn't find kingdom:", kingdom)

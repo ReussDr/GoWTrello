@@ -1,7 +1,7 @@
 """
 Module for Pet Class
 """
-import gems_common
+import gow_common
 
 PETS_RESCUEABLE = [
     "Auraio",
@@ -142,15 +142,15 @@ class Pet:
         self._vals['rarity'] = rarity
         self._vals['kingdom'] = kingdom
         self._vals['level'] = level
-        if kingdom not in gems_common.KINGDOM_FACTION_MAP and \
-                kingdom not in gems_common.NON_KINGDOMS:
+        if kingdom not in gow_common.KINGDOM_FACTION_MAP and \
+                kingdom not in gow_common.NON_KINGDOMS:
             print("Error: Can't find kingdom for", name)
         self._vals['source'] = self.get_pet_type(name)
         if self._vals['source'] == "Unknown":
             print("Error: Can't find source for", name)
-        self._vals['count_needed'] = gems_common.pets_needed_to_mythic(3,
-                                                                       self._vals['rarity'],
-                                                                       self._vals['count'])
+        self._vals['count_needed'] = gow_common.pets_needed_to_mythic(3,
+                                                                      self._vals['rarity'],
+                                                                      self._vals['count'])
 
     @classmethod
     def gen_pet_from_json(cls, json_record):

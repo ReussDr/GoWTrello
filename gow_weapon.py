@@ -2,7 +2,7 @@
 Module for Weapon class (for Gems of War Data)
 """
 
-import gems_common
+import gow_common
 
 TRAITS_TO_MAX = [0, 5, 6, 7, 8, 9, 10, 10]
 
@@ -18,7 +18,7 @@ class Weapon:
         self._vals['traitcount'] = traitcount
         self._vals['kingdom'] = ""
 
-        if gems_common.is_kingdom(kingdom):
+        if gow_common.is_kingdom(kingdom):
             self._vals['kingdom'] = kingdom
         else:
             print("Error: Couldn't find kingdom:", kingdom)

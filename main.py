@@ -9,11 +9,11 @@ import pytz
 import wget
 from trello import TrelloClient
 import gow_class
+import gow_kingdom_stats
+import gow_pet
+import gow_traitstones
+import gow_troop
 import gow_weapon
-import pet
-import kingdom_stats
-import traitstones
-import troop
 
 
 def create_arg_parser():
@@ -195,7 +195,7 @@ def main():
             developer = json.load(read_file)
 
             print("Decoded JSON Data From File")
-            ts = traitstones.Traitstones()
+            ts = gow_traitstones.Traitstones()
             for stone in developer['traitstones']:
                 if 'count' not in stone:
                     stone['count'] = 0
@@ -204,13 +204,13 @@ def main():
 
             pets = []
             for jsonpet in developer['pets']:
-                pets.append(pet.Pet.gen_pet_from_json(jsonpet))
-            pet.Pet.print_pet_csv("pets.csv", pets)
+                pets.append(gow_pet.Pet.gen_pet_from_json(jsonpet))
+            gow_pet.Pet.print_pet_csv("pets.csv", pets)
 
             troops = []
             for jsontroop in developer['troops']:
-                troops.append(troop.Troop.gen_troop_from_json(jsontroop))
-            troop.Troop.print_troop_csv("troops.csv", troops)
+                troops.append(gow_troop.Troop.gen_troop_from_json(jsontroop))
+            gow_troop.Troop.print_troop_csv("troops.csv", troops)
 
             classes = []
             for jsonclass in developer['classes']:
@@ -224,7 +224,7 @@ def main():
 
             #TODO Max Levels based on pulled stats
 
-            stats = kingdom_stats.KingdomStats()
+            stats = gow_kingdom_stats.KingdomStats()
             for troop_iter in troops:
                 stats.add_troop(troop_iter)
             stats.print_csv("kingdom_stats.csv")
