@@ -232,20 +232,14 @@ class Pet:
         """
         return self._vals['kingdom']
 
-    def get_rarity(self):
-        """
-        Retrieve the rarity for this pet
-        """
-        return self._vals['rarity']
-
-    def get_curr_rarity(self):
-        """
-        Retrieve the current rarity for this pet
-        """
-        return self._vals['curr_rarity']
-
     def get_count(self):
         """
         Retrieve the count for this pet
         """
         return self._vals['count']
+
+    def get_level(self):
+        """
+        Retrieve the level for this pet
+        """
+        return self._vals['level']

@@ -79,6 +79,12 @@ class Class:
                 csv_file.write(gow_class.get_csv_record())
                 csv_file.write("\n")
 
+    def get_name(self):
+        """
+        Retrieve the name for this class
+        """
+        return self._vals['name']
+
     def get_kingdom(self):
         """
         Retrieve the kingdom for this class
@@ -90,3 +96,15 @@ class Class:
         Retrieve the trait count for this class
         """
         return self._vals['traitcount']
+
+    def get_level(self):
+        """
+        Retrieve the level for this class
+        """
+        return self._vals['level']
+
+    def get_sublevel(self):
+        """
+        Retrieve the sublevel for this class
+        """
+        return self._vals['sublevel']

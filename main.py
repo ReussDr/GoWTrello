@@ -225,8 +225,14 @@ def main():
             #TODO Max Levels based on pulled stats
 
             stats = gow_kingdom_stats.KingdomStats()
-            for troop_iter in troops:
-                stats.add_troop(troop_iter)
+            for troop in troops:
+                stats.add_troop(troop)
+            for pet in pets:
+                stats.add_pet(pet)
+            for gw_class in classes:
+                stats.add_class(gw_class)
+            for weapon in weapons:
+                stats.add_weapon(weapon)
             stats.print_csv("kingdom_stats.csv")
 
 
