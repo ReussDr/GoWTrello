@@ -3,6 +3,36 @@ A class for accumulating statistics about Kingdoms
 """
 import gow_common
 
+MAX_POWER_TROOP_TRAITS = {
+    4: 3,
+    7: 5,
+    11: 7,
+    16: 9,
+    21: 12,
+    23: 14,
+    25: 16,
+    27: 18,
+    29: 20,
+    31: 22,
+    33: 24,
+    35: 26,
+    37: 28,
+    39: 30,
+}
+
+MAX_POWER_TROOP_LEVEL20 = {
+    18: 10,
+    20: 11,
+    22: 13,
+    24: 15,
+    26: 17,
+    28: 19,
+    30: 21,
+    32: 23,
+    34: 25,
+    36: 27,
+    38: 29,
+}
 
 class KingdomStats:
     """
@@ -22,6 +52,7 @@ class KingdomStats:
             self._totals[kingdom]['owned_troops'] = 0
             self._totals[kingdom]['fully_traited_troops'] = 0
             self._totals[kingdom]['mythic_troops'] = 0
+            self._totals[kingdom]['level_20_troops'] = 0
             self._totals[kingdom]['faction_fully_traited_troops'] = 0
             self._totals[kingdom]['faction_mythic_troops'] = 0
 
@@ -62,6 +93,8 @@ class KingdomStats:
             self._totals[kingdom]['mythic_troops'] += 1
             if troop.get_faction() != "":
                 self._totals[kingdom]['faction_mythic_troops'] += 1
+        if troop.get_level() == 20:
+            self._totals[kingdom]['level_20_troops'] += 1
 
     def add_pet(self, pet):
         """
@@ -124,10 +157,11 @@ class KingdomStats:
         """
         with open(csv_file_name, "w") as csv_file:
             csv_file.write("Kingdom,Faction,Mythic,Total Troops,Owned Troops,3x Traited Troops,")
-            csv_file.write("Mythic Troops,Faction 3x Traited Troops,Faction Mythic Troops,")
+            csv_file.write("Mythic Troops,Level 20 Troops,Faction 3x Traited Troops,Faction Mythic Troops,")
             csv_file.write("Total Pets,Owned Pets,Max Pet Level,Maxed Pets,")
             csv_file.write("Class Name,Level,Sublevel,Traitcount,")
-            csv_file.write("Total Weapons,Owned Weapons,Maxed Weapons\n")
+            csv_file.write("Total Weapons,Owned Weapons,Maxed Weapons,")
+            csv_file.write("Max Power Troop Trait,Max Power Troop Level 20\n")
             for kingdom in self._totals:
                 csv_file.write(kingdom + ",")
                 csv_file.write(self._totals[kingdom]['faction'] + ",")
@@ -139,6 +173,7 @@ class KingdomStats:
                 csv_file.write(str(self._totals[kingdom]['owned_troops']) + ",")
                 csv_file.write(str(self._totals[kingdom]['fully_traited_troops']) + ",")
                 csv_file.write(str(self._totals[kingdom]['mythic_troops']) + ",")
+                csv_file.write(str(self._totals[kingdom]['level_20_troops']) + ",")
                 csv_file.write(str(self._totals[kingdom]['faction_fully_traited_troops']) + ",")
                 csv_file.write(str(self._totals[kingdom]['faction_mythic_troops']) + ",")
 
@@ -158,5 +193,20 @@ class KingdomStats:
                 csv_file.write(str(self._totals[kingdom]['total_weapons']) + ",")
                 csv_file.write(str(self._totals[kingdom]['owned_weapons']) + ",")
                 csv_file.write(str(self._totals[kingdom]['maxed_weapons']) + ",")
+
+                # Write Power Level Max
+                max_power_troop_trait = 0
+                for level in MAX_POWER_TROOP_TRAITS:
+                    max_power_troop_trait = MAX_POWER_TROOP_TRAITS[level] - 1
+                    if self._totals[kingdom]['fully_traited_troops'] < level:
+                        break
+                csv_file.write(str(max_power_troop_trait) + ",")
+
+                max_power_troop_level20 = 0
+                for level in MAX_POWER_TROOP_LEVEL20:
+                    max_power_troop_level20 = MAX_POWER_TROOP_LEVEL20[level] - 1
+                    if self._totals[kingdom]['level_20_troops'] < level:
+                        break
+                csv_file.write(str(max_power_troop_level20) + ",")
 
                 csv_file.write("\n")

@@ -132,3 +132,9 @@ class Troop:
         Retrieve the count for this troop
         """
         return self._vals['count']
+
+    def get_level(self):
+        """
+        Retrieve the level for this troop
+        """
+        return self._vals['level']
