@@ -34,6 +34,30 @@ MAX_POWER_TROOP_LEVEL20 = {
     38: 29,
 }
 
+MAX_POWER_TROOP_MYTHIC = {
+    1: 10,
+    2: 22,
+}
+
+MAX_POWER_WEAPON_OWNED = {
+    1: 3,
+    3: 7,
+    4: 12,
+}
+
+MAX_POWER_WEAPON_MAXED = {
+    1: 5,
+    2: 8,
+    3: 14,
+    4: 16,
+    6: 18,
+    8: 20,
+    10: 24,
+    12: 26,
+    14: 28,
+}
+
+
 class KingdomStats:
     """
     A class to accumulate Kingdom Statistics
@@ -161,7 +185,7 @@ class KingdomStats:
             csv_file.write("Total Pets,Owned Pets,Max Pet Level,Maxed Pets,")
             csv_file.write("Class Name,Level,Sublevel,Traitcount,")
             csv_file.write("Total Weapons,Owned Weapons,Maxed Weapons,")
-            csv_file.write("Max Power Troop Trait,Max Power Troop Level 20\n")
+            csv_file.write("Max Power Troop Trait,Max Power Troop Level 20,Max Power Weapon Owned\n")
             for kingdom in self._totals:
                 csv_file.write(kingdom + ",")
                 csv_file.write(self._totals[kingdom]['faction'] + ",")
@@ -195,18 +219,22 @@ class KingdomStats:
                 csv_file.write(str(self._totals[kingdom]['maxed_weapons']) + ",")
 
                 # Write Power Level Max
-                max_power_troop_trait = 0
-                for level in MAX_POWER_TROOP_TRAITS:
-                    max_power_troop_trait = MAX_POWER_TROOP_TRAITS[level] - 1
+                max_power_troop_trait = 30
+                for level in reversed(MAX_POWER_TROOP_TRAITS):
                     if self._totals[kingdom]['fully_traited_troops'] < level:
-                        break
+                        max_power_troop_trait = MAX_POWER_TROOP_TRAITS[level] - 1
                 csv_file.write(str(max_power_troop_trait) + ",")
 
                 max_power_troop_level20 = 0
-                for level in MAX_POWER_TROOP_LEVEL20:
-                    max_power_troop_level20 = MAX_POWER_TROOP_LEVEL20[level] - 1
+                for level in reversed(MAX_POWER_TROOP_LEVEL20):
                     if self._totals[kingdom]['level_20_troops'] < level:
-                        break
+                        max_power_troop_level20 = MAX_POWER_TROOP_LEVEL20[level] - 1
                 csv_file.write(str(max_power_troop_level20) + ",")
+
+                max_power_weapon_owned = 30
+                for level in reversed(MAX_POWER_WEAPON_OWNED):
+                    if self._totals[kingdom]['owned_weapons'] < level:
+                        max_power_weapon_owned = MAX_POWER_WEAPON_OWNED[level] - 1
+                csv_file.write(str(max_power_weapon_owned) + ",")
 
                 csv_file.write("\n")
