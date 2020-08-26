@@ -96,6 +96,7 @@ def get_cards_to_create(day_to_create):
              "Daily Adventure Board": [day_to_create, daily_due],
              "Daily Dungeon": [day_to_create, daily_due],
              "Daily PvP Battle": [day_to_create, daily_due],
+             "Daily Guild Wars Battle": [day_to_create, daily_due],
              }
     if day_to_create.weekday() == 1:
         cards["Faction Assault"] = [day_to_create, daily_due]
