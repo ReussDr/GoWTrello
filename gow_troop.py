@@ -4,6 +4,21 @@ Module for Troop class (for Gems of War Data)
 
 import gow_common
 
+NON_EVENT_KEYS = [
+    "Doom of Darkness",  # Doom Troop
+    "Doom of Flame",     # Doom Troop
+    "Doom of Ice",       # Doom Troop
+    "Doom of Light",     # Doom Troop
+    "Doom of Nature",    # Doom Troop
+    "Doom of Stone",     # Doom Troop
+    "Aurai",             # GW Exclusive
+    "Myzmer",            # GW Exclusive
+    "Ogryn",             # GW Exclusive
+    "Penguin",           # GW Exclusive
+    "Peryton",           # GW Exclusive
+    "Troglodyte",        # GW Exclusive
+]
+
 class Troop:
     """
     Troop class to hold data about Gems of War Troops
@@ -97,6 +112,12 @@ class Troop:
                 csv_file.write(troop.get_csv_record())
                 csv_file.write("\n")
 
+    def get_name(self):
+        """
+        Return the name for the troop
+        """
+        return self._vals['name']
+
     def get_kingdom(self):
         """
         Retrieve the kingdom for this troop
@@ -138,3 +159,9 @@ class Troop:
         Retrieve the level for this troop
         """
         return self._vals['level']
+
+    def get_count_needed(self):
+        """
+        Return the number of copies still needed
+        """
+        return self._vals['count_needed']

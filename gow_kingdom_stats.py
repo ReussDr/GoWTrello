@@ -2,6 +2,7 @@
 A class for accumulating statistics about Kingdoms
 """
 import gow_common
+import gow_troop
 
 MAX_POWER_TROOP_TRAITS = {
     4: 3,
@@ -72,6 +73,7 @@ class KingdomStats:
 
             # Troop Variables
             self._totals[kingdom]['mythic_owned_troops'] = 0
+            self._totals[kingdom]['mythic_missing_troops'] = 0
             self._totals[kingdom]['total_troops'] = 0
             self._totals[kingdom]['owned_troops'] = 0
             self._totals[kingdom]['fully_traited_troops'] = 0
@@ -79,6 +81,7 @@ class KingdomStats:
             self._totals[kingdom]['level_20_troops'] = 0
             self._totals[kingdom]['faction_fully_traited_troops'] = 0
             self._totals[kingdom]['faction_mythic_troops'] = 0
+            self._totals[kingdom]['troop_missing_cards'] = 0
 
             # Pet Variables
             self._totals[kingdom]['total_pets'] = 0
@@ -107,8 +110,11 @@ class KingdomStats:
         self._totals[kingdom]['total_troops'] += 1
         if troop.get_count() > 0:
             self._totals[kingdom]['owned_troops'] += 1
-        if troop.get_base_rarity() == 6 and troop.get_count() > 0:
-            self._totals[kingdom]['mythic_owned_troops'] += 1
+        if troop.get_base_rarity() == 6:
+            if troop.get_count() > 0:
+                self._totals[kingdom]['mythic_owned_troops'] += 1
+            else:
+                self._totals[kingdom]['mythic_missing_troops'] += 1
         if troop.get_traitcount() == 3:
             self._totals[kingdom]['fully_traited_troops'] += 1
             if troop.get_faction() != "":
@@ -119,6 +125,8 @@ class KingdomStats:
                 self._totals[kingdom]['faction_mythic_troops'] += 1
         if troop.get_level() == 20:
             self._totals[kingdom]['level_20_troops'] += 1
+        if troop.get_faction() == "" and troop.get_name() not in gow_troop.NON_EVENT_KEYS:
+            self._totals[kingdom]['troop_missing_cards'] += troop.get_count_needed()
 
     def add_pet(self, pet):
         """
@@ -184,8 +192,9 @@ class KingdomStats:
         :param csv_file_name: name of the csv file
         """
         with open(csv_file_name, "w") as csv_file:
-            csv_file.write("Kingdom,Faction,Mythic,Total Troops,Owned Troops,3x Traited Troops,")
-            csv_file.write("Mythic Troops,Level 20 Troops,Faction 3x Traited Troops,Faction Mythic Troops,")
+            csv_file.write("Kingdom,Faction,Mythic,Mythic Missing,Total Troops,Owned Troops,")
+            csv_file.write("3x Traited Troops,Mythic Troops,Level 20 Troops,Needed Troop Cards,")
+            csv_file.write("Faction 3x Traited Troops,Faction Mythic Troops,")
             csv_file.write("Total Pets,Owned Pets,Max Pet Level,Maxed Pets,")
             csv_file.write("Class Name,Level,Sublevel,Traitcount,")
             csv_file.write("Total Weapons,Owned Weapons,Maxed Weapons,")
@@ -195,11 +204,13 @@ class KingdomStats:
                 csv_file.write(kingdom + ",")
                 csv_file.write(self._totals[kingdom]['faction'] + ",")
                 csv_file.write(str(self._totals[kingdom]['mythic_owned_troops']) + ",")
+                csv_file.write(str(self._totals[kingdom]['mythic_missing_troops']) + ",")
                 csv_file.write(str(self._totals[kingdom]['total_troops']) + ",")
                 csv_file.write(str(self._totals[kingdom]['owned_troops']) + ",")
                 csv_file.write(str(self._totals[kingdom]['fully_traited_troops']) + ",")
                 csv_file.write(str(self._totals[kingdom]['mythic_asc_troops']) + ",")
                 csv_file.write(str(self._totals[kingdom]['level_20_troops']) + ",")
+                csv_file.write(str(self._totals[kingdom]['troop_missing_cards']) + ",")
                 csv_file.write(str(self._totals[kingdom]['faction_fully_traited_troops']) + ",")
                 csv_file.write(str(self._totals[kingdom]['faction_mythic_troops']) + ",")
 
