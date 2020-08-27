@@ -120,6 +120,7 @@ PETS_COSMETIC = [
     "Prancer",
     "Puppy Pirate",
     "Rat of Fortune",
+    "Revered Dragonkitty",
     "Sharki",
     "Skullbeak",
     "Tailchaser",
@@ -128,6 +129,12 @@ PETS_COSMETIC = [
     "Valentiny",
     "War Corgi",
     "X-Ball",
+]
+
+PETS_UNOBTAINABLE = [
+    "Droid-bot",    # Android Exclusive
+    "Mei",          # Cosmetic, Unknown Source
+    "Steam Puppy",  # Steam Exclusive
 ]
 
 
@@ -160,6 +167,8 @@ class Pet:
         :param json_record: The json record (from gowdb inventory)
         :return:            The constructed Pet object
         """
+        if json_record['name'] in PETS_UNOBTAINABLE:
+            return None
         if 'count' not in json_record:
             json_record['count'] = 0
         if 'level' not in json_record:
@@ -207,8 +216,9 @@ class Pet:
             csv_file.write(Pet.get_csv_header())
             csv_file.write("\n")
             for pet in pet_array:
-                csv_file.write(pet.get_csv_record())
-                csv_file.write("\n")
+                if pet is not None:
+                    csv_file.write(pet.get_csv_record())
+                    csv_file.write("\n")
 
     @staticmethod
     def get_pet_type(name):
