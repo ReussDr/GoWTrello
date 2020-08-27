@@ -164,6 +164,8 @@ class KingdomStats:
         Add a weapon to Kingdom Stats
         :param weapon: weapon to add
         """
+        if weapon is None:
+            return
         kingdom = weapon.get_kingdom()
 
         # If it's not a Kingdom Proper, return
@@ -220,7 +222,7 @@ class KingdomStats:
 
                 # Write Power Level Max
                 max_power_mythics_owned = 30
-                for level in (reversed(MAX_POWER_TROOP_MYTHIC)):
+                for level in reversed(MAX_POWER_TROOP_MYTHIC):
                     if self._totals[kingdom]['mythic_owned_troops'] < level:
                         max_power_mythics_owned = MAX_POWER_TROOP_MYTHIC[level] - 1
                 csv_file.write(str(max_power_mythics_owned) + ",")

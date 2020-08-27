@@ -6,6 +6,61 @@ import gow_common
 
 TRAITS_TO_MAX = [0, 5, 6, 7, 8, 9, 10, 10]
 
+# Weapons listed in gowdb.com that are not available
+WEAPONS_UNOBTAINABLE = [
+    "Tinker's Buzzblade",           # Adana
+    "Blighted Weapon",              # Blighted Lands
+    "Blue Doomed Weapon",           # Broken Spire
+    "Brown Doomed Weapon",          # Broken Spire
+    "Campaign 2 Weapon A",          # Broken Spire
+    "Campaign 2 Weapon B",          # Broken Spire
+    "Campaign 2 Weapon C",          # Broken Spire
+    "Green Doomed Weapon",          # Broken Spire
+    "Mystery Egg",                  # Broken Spire
+    "Purple Doomed Weapon",         # Broken Spire
+    "Red Doomed Weapon",            # Broken Spire
+    "Tauros Invasion Weapon",       # Broken Spire
+    "Yellow Doomed Weapon",         # Broken Spire
+    "Darkstone Raid Boss Weapon",   # Darkstone
+    "Darkstone Weapon",             # Darkstone
+    "Dhrak-Zum Weapon",             # Dhrak-Zum
+    "Divinion Fields Weapon",       # Divinion Fields
+    "Dragon's Claw Weapon",         # Dragon's Claw
+    "Drifting Sands Weapon",        # Drifting Sands
+    "Forest Weapon",                # Forest of Thorns
+    "Ghulvania Weapon",             # Ghulvania
+    "Glacial Weapon",               # Glacial Peaks
+    "Grosh-Nak Weapon",             # Grosh-Nak
+    "Lockstone",                    # Grosh-Nak
+    "Karakoth Weapon",              # Karakoth
+    "Khetar Weapon",                # Khetar
+    "Khetari",                      # Khetar
+    "Krys-hook",                    # Khetar
+    "Lupine's Edge",                # Maugrim Woods
+    "Maugrim Weapon",               # Maugrim Woods
+    "Mist of Scales Weapon",        # Mist of Scales
+    "Shentang Weapon",              # Shentang
+    "Keystone",                     # Sin of Maraj
+    "Urskaya Weapon",               # Urskaya
+    "Divine Invasion Weapon",       # Whitehelm
+    "Whitehelm Weapon",             # Whitehelm
+    "Doomed Breaker",               # Zaejin
+    "Aranaean Bloom",               # Zhul'Kari
+    "Eldrazi Wand",                 # Zhul'Kari
+]
+
+# List of Weapons, current not listed in gowdb.com
+WEAPONS_MISSING = {
+    "Doomed Opus": "Adana",
+    "Doomed Chronicle": "Divinion Fields",
+    "Doomed Codex": "Grosh-Nak",
+    "Doomed Tome": "Khetar",
+    "Doomed Libram": "Shentang",
+    "Doomed Scripture": "Whitehelm",
+    "Norbert's Turnip": "Zaejin",
+}
+
+
 class Weapon:
     """
     Weapon class to hold data about Gems of War Weapons
@@ -31,6 +86,10 @@ class Weapon:
         :param json_record: The json record (from gowdb inventory)
         :return:            The constructed Weapon object
         """
+        if json_record['name'] in WEAPONS_UNOBTAINABLE:
+            return None
+        if json_record['name'] in WEAPONS_MISSING:
+            print("Error: Weapon", json_record['name'], "was previously not available in gowdb.com")
         if 'count' not in json_record:
             json_record['count'] = 0
         if 'traitCount' not in json_record:
@@ -78,8 +137,9 @@ class Weapon:
             csv_file.write(Weapon.get_csv_header())
             csv_file.write("\n")
             for weapon in weapon_array:
-                csv_file.write(weapon.get_csv_record())
-                csv_file.write("\n")
+                if weapon is not None:
+                    csv_file.write(weapon.get_csv_record())
+                    csv_file.write("\n")
 
     def is_max(self):
         """
