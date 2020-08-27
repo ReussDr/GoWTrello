@@ -2,7 +2,9 @@
 A class for accumulating statistics about Kingdoms
 """
 import gow_common
+import gow_pet
 import gow_troop
+import gow_weapon
 
 MAX_POWER_TROOP_TRAITS = {
     4: 3,
@@ -185,6 +187,22 @@ class KingdomStats:
             self._totals[kingdom]['owned_weapons'] += 1
         if weapon.is_max():
             self._totals[kingdom]['maxed_weapons'] += 1
+
+    def add_missing_weapons(self):
+        for weapon in gow_weapon.WEAPONS_MISSING:
+            kingdom = gow_weapon.WEAPONS_MISSING[weapon]
+            if not gow_common.is_kingdom(kingdom):
+                print("Missing Weapon is not from a kingdom:", weapon, kingdom)
+            else:
+                self._totals[kingdom]['total_weapons'] += 1
+
+    def add_missing_pets(self):
+        for pet in gow_pet.PETS_MISSING:
+            kingdom = gow_pet.PETS_MISSING[pet]
+            if not gow_common.is_kingdom(kingdom):
+                print("Missing Pet is not from a kingdom:", pet, kingdom)
+            else:
+                self._totals[kingdom]['total_pets'] += 1
 
     def print_csv(self, csv_file_name):
         """

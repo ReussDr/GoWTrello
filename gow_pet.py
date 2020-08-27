@@ -137,6 +137,33 @@ PETS_UNOBTAINABLE = [
     "Steam Puppy",  # Steam Exclusive
 ]
 
+# List of Pets, current not listed in gowdb.com
+PETS_MISSING = {
+    "Sir Botlet IV":        "Adana",
+    "Dark Helmut":          "Blighted Lands",
+    "Wimp":                 "Blighted Lands",
+    "Micro Muffin X":       "Bright Forest",
+    "<3":                   "Broken Spire",
+    "Hamsterthalamus":      "Dhrak-Zum",
+    "Mask-supial":          "Divinion Fields",
+    "Miniskito":            "Drifting Sands",
+    "Little Lupus":         "Maugrim Woods",
+    "Swampie":              "Mist of Scales",
+    "Bunnilope":            "Pan's Vale",
+    "Tail Chaser":          "Pridelands",
+    "Sad Panda":            "Shentang",
+    "Spell Spaniel":        "Silverglade",
+    "Beelz":                "Sin of Maraj",
+    "Semi Deminaga":        "Sin of Maraj",
+    "Kuranarito":           "Urskaya",
+    "Sir Ted":              "Urskaya",
+    "Sacred Cub":           "Whitehelm",
+    "Chomp Chomp Chomp":    "Wild Plains",
+    "Black Beast-kin":      "Zaejin",
+    "McMimic":              "Zaejin",
+    "Spiderling":           "Zhul'Kari",
+}
+
 
 class Pet:
     """
@@ -169,6 +196,8 @@ class Pet:
         """
         if json_record['name'] in PETS_UNOBTAINABLE:
             return None
+        if json_record['name'] in PETS_MISSING:
+            print("Error: Pet", json_record['name'], "was previously not available in gowdb.com")
         if 'count' not in json_record:
             json_record['count'] = 0
         if 'level' not in json_record:

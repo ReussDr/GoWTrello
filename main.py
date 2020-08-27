@@ -234,6 +234,8 @@ def main():
                 stats.add_class(gw_class)
             for weapon in weapons:
                 stats.add_weapon(weapon)
+            stats.add_missing_weapons()
+            stats.add_missing_pets()
             stats.print_csv("kingdom_stats.csv")
 
 
