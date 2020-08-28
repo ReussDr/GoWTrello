@@ -14,7 +14,7 @@ RARITY_LOOKUP = ["Zero",
                  "Mythic"]
 
 KINGDOM_FACTION_MAP = {
-    "Adana" : "",
+    "Adana" : "Tinker Town",
     "Blackhawk": "",
     "Blighted Lands": "Fell Roost",
     "Bright Forest": "Sunken Fleet",

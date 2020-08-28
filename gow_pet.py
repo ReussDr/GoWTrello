@@ -92,6 +92,7 @@ PETS_FACTION = [
     "Minito Mori",
     "Minnow",
     "Mirror Mimic",
+    "Pet-o-bot",
     "Rattlebone",
     "Sad Panda",
     "Semi Deminaga",
