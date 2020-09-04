@@ -8,7 +8,6 @@ TRAITS_TO_MAX = [0, 5, 6, 7, 8, 9, 10, 10]
 
 # Weapons listed in gowdb.com that are not available
 WEAPONS_UNOBTAINABLE = [
-    "Tinker's Buzzblade",           # Adana
     "Blighted Weapon",              # Blighted Lands
     "Blue Doomed Weapon",           # Broken Spire
     "Brown Doomed Weapon",          # Broken Spire
@@ -87,6 +86,8 @@ class Weapon:
         :return:            The constructed Weapon object
         """
         if json_record['name'] in WEAPONS_UNOBTAINABLE:
+            if 'count' in json_record and json_record['count'] > 0:
+                print("Error: Unobtainable Weapon Owned", json_record['name'])
             return None
         if json_record['name'] in WEAPONS_MISSING:
             print("Error: Weapon", json_record['name'], "was previously not available in gowdb.com")
