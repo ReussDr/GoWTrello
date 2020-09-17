@@ -30,7 +30,6 @@ WEAPONS_UNOBTAINABLE = [
     "Ghulvania Weapon",             # Ghulvania
     "Glacial Weapon",               # Glacial Peaks
     "Grosh-Nak Weapon",             # Grosh-Nak
-    "Lockstone",                    # Grosh-Nak
     "Karakoth Weapon",              # Karakoth
     "Khetar Weapon",                # Khetar
     "Khetari",                      # Khetar
@@ -39,7 +38,6 @@ WEAPONS_UNOBTAINABLE = [
     "Maugrim Weapon",               # Maugrim Woods
     "Mist of Scales Weapon",        # Mist of Scales
     "Shentang Weapon",              # Shentang
-    "Keystone",                     # Sin of Maraj
     "Urskaya Weapon",               # Urskaya
     "Divine Invasion Weapon",       # Whitehelm
     "Whitehelm Weapon",             # Whitehelm

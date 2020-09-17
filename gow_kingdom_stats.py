@@ -280,4 +280,8 @@ class KingdomStats:
                         max_power_weapon_maxed = MAX_POWER_WEAPON_MAXED[level] - 1
                 csv_file.write(str(max_power_weapon_maxed) + ",")
 
+                # TODO Rewrite writing max as a simple function
+
+
+
                 csv_file.write("\n")
