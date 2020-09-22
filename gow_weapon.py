@@ -33,7 +33,6 @@ WEAPONS_UNOBTAINABLE = [
     "Karakoth Weapon",              # Karakoth
     "Khetar Weapon",                # Khetar
     "Khetari",                      # Khetar
-    "Krys-hook",                    # Khetar
     "Lupine's Edge",                # Maugrim Woods
     "Maugrim Weapon",               # Maugrim Woods
     "Mist of Scales Weapon",        # Mist of Scales
