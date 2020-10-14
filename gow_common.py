@@ -47,7 +47,7 @@ KINGDOM_FACTION_MAP = {
     "Whitehelm": "Hall of Guardians",
     "Wild Plains": "",
     "Zaejin": "Amanithrax",
-    "Zhul'Kari": "",
+    "Zhul'Kari": "Eldrazhor",
 }
 
 NON_KINGDOMS = [

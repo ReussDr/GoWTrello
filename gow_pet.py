@@ -86,6 +86,7 @@ PETS_FACTION = [
     "Frog Prince",
     "Hamsterthalamus",
     "Hare-o-Plane",
+    "Itsy Bitsy Drider",
     "Joust Mouse",
     "Minirino",
     "Miniskito",

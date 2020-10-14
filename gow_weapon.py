@@ -33,16 +33,13 @@ WEAPONS_UNOBTAINABLE = [
     "Karakoth Weapon",              # Karakoth
     "Khetar Weapon",                # Khetar
     "Khetari",                      # Khetar
-    "Lupine's Edge",                # Maugrim Woods
     "Maugrim Weapon",               # Maugrim Woods
     "Mist of Scales Weapon",        # Mist of Scales
     "Shentang Weapon",              # Shentang
     "Urskaya Weapon",               # Urskaya
     "Divine Invasion Weapon",       # Whitehelm
     "Whitehelm Weapon",             # Whitehelm
-    "Doomed Breaker",               # Zaejin
     "Aranaean Bloom",               # Zhul'Kari
-    "Eldrazi Wand",                 # Zhul'Kari
 ]
 
 # List of Weapons, current not listed in gowdb.com
