@@ -60,7 +60,6 @@ MAX_POWER_WEAPON_MAXED = {
     14: 28,
 }
 
-
 class KingdomStats:
     """
     A class to accumulate Kingdom Statistics
@@ -189,6 +188,9 @@ class KingdomStats:
             self._totals[kingdom]['maxed_weapons'] += 1
 
     def add_missing_weapons(self):
+        """
+        Adjust the total number of weapons for the kingdom based on the WEAPON_MISSING list
+        """
         for weapon in gow_weapon.WEAPONS_MISSING:
             kingdom = gow_weapon.WEAPONS_MISSING[weapon]
             if not gow_common.is_kingdom(kingdom):
@@ -197,6 +199,9 @@ class KingdomStats:
                 self._totals[kingdom]['total_weapons'] += 1
 
     def add_missing_pets(self):
+        """
+        Adjust the total number of pets for the kingdom based on the PETS_MISSING list
+        """
         for pet in gow_pet.PETS_MISSING:
             kingdom = gow_pet.PETS_MISSING[pet]
             if not gow_common.is_kingdom(kingdom):
@@ -216,8 +221,9 @@ class KingdomStats:
             csv_file.write("Total Pets,Owned Pets,Max Pet Level,Maxed Pets,")
             csv_file.write("Class Name,Level,Sublevel,Traitcount,")
             csv_file.write("Total Weapons,Owned Weapons,Maxed Weapons,")
-            csv_file.write("Max Power Mythics Owned,Max Power Troop Trait,Max Power Troop Level 20,")
-            csv_file.write("Max Power Weapon Owned,Max Power Weapon Maxed\n")
+            csv_file.write("Max Power Mythics Owned,Max Power Troop Trait,")
+            csv_file.write("Max Power Troop Level 20,Max Power Weapon Owned,")
+            csv_file.write("Max Power Weapon Maxed\n")
             for kingdom in self._totals:
                 csv_file.write(kingdom + ",")
                 csv_file.write(self._totals[kingdom]['faction'] + ",")
