@@ -152,6 +152,7 @@ def update_tasks(config):
     # Remove cards with expired due dates, and build a list of existing cards
     existing_cards = []
     for card in gow_board.all_cards():
+        # TODO Add handling for cards without due dates
         if card.due_date < datetime.datetime.now().astimezone():
             card.delete()
         else:
