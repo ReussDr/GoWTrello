@@ -29,7 +29,7 @@ KINGDOM_FACTION_MAP = {
     "Glacial Peaks": "Mirrored Halls",
     "Grosh-Nak": "",
     "Karakoth": "",
-    "Khaziel": "",
+    "Khaziel": "Emperinazar",
     "Khetar": "Fang Moor",
     "Leonis Empire": "City of Thieves",
     "Maugrim Woods": "",
@@ -45,7 +45,7 @@ KINGDOM_FACTION_MAP = {
     "Sword's Edge": "Crypt Keepers",
     "Urskaya": "Werewoods",
     "Whitehelm": "Hall of Guardians",
-    "Wild Plains": "",
+    "Wild Plains": "The Labyrinth",
     "Zaejin": "Amanithrax",
     "Zhul'Kari": "Eldrazhor",
 }
