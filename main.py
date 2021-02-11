@@ -97,7 +97,15 @@ def get_cards_to_create(day_to_create):
              "Daily Dungeon": [day_to_create, daily_due],
              "Daily PvP Battle": [day_to_create, daily_due],
              "Daily Guild Wars Battle": [day_to_create, daily_due],
+             "Daily XBox GamePass Rewards": [day_to_create, daily_due],
+             "Daily Microsoft Rewards Set": [day_to_create, daily_due],
+             "Daily Mass Effect Missions": [day_to_create, daily_due],
+             "Walk Dog #1": [day_to_create, daily_due],
+             "Walk Dog #2": [day_to_create, daily_due],
+             "Exercise": [day_to_create, daily_due],
              }
+    if day_to_create.weekday() == 0:
+        cards["Calculate Weekly Req"] = [day_to_create, daily_due]
     if day_to_create.weekday() == 1:
         cards["Faction Assault"] = [day_to_create, daily_due]
     if day_to_create.weekday() == 2:
@@ -110,6 +118,7 @@ def get_cards_to_create(day_to_create):
 
     beginning_of_week = day_to_create - datetime.timedelta(days=day_to_create.weekday())
     weekly_due = beginning_of_week + datetime.timedelta(days=7)
+    cards["Review XBox Sales"] = [beginning_of_week, weekly_due]
     cards["Weekly PvP Tier 1"] = [beginning_of_week, weekly_due]
     cards["Weekly Campaign"] = [beginning_of_week, weekly_due]
     cards["Weekly World Event"] = [beginning_of_week, weekly_due]

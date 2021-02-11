@@ -15,7 +15,6 @@ WEAPONS_UNOBTAINABLE = [
     "Campaign 2 Weapon B",          # Broken Spire
     "Campaign 2 Weapon C",          # Broken Spire
     "Green Doomed Weapon",          # Broken Spire
-    "Mystery Egg",                  # Broken Spire
     "Purple Doomed Weapon",         # Broken Spire
     "Red Doomed Weapon",            # Broken Spire
     "Tauros Invasion Weapon",       # Broken Spire

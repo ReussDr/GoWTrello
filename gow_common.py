@@ -28,7 +28,7 @@ KINGDOM_FACTION_MAP = {
     "Ghulvania": "",
     "Glacial Peaks": "Mirrored Halls",
     "Grosh-Nak": "",
-    "Karakoth": "",
+    "Karakoth": "Duergaroth",
     "Khaziel": "Emperinazar",
     "Khetar": "Fang Moor",
     "Leonis Empire": "City of Thieves",
