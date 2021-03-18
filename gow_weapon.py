@@ -38,17 +38,10 @@ WEAPONS_UNOBTAINABLE = [
     "Urskaya Weapon",               # Urskaya
     "Divine Invasion Weapon",       # Whitehelm
     "Whitehelm Weapon",             # Whitehelm
-    "Aranaean Bloom",               # Zhul'Kari
 ]
 
 # List of Weapons, current not listed in gowdb.com
 WEAPONS_MISSING = {
-    "Doomed Opus": "Adana",
-    "Doomed Chronicle": "Divinion Fields",
-    "Doomed Codex": "Grosh-Nak",
-    "Doomed Tome": "Khetar",
-    "Doomed Libram": "Shentang",
-    "Doomed Scripture": "Whitehelm",
     "Norbert's Turnip": "Zaejin",
 }
 
