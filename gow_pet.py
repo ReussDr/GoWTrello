@@ -54,6 +54,7 @@ PETS_RESCUEABLE = [
     "Rocki",
     "Rockweiler",
     "Sacred Cub",
+    "Scrappy",
     "Shortlong",
     "Shrunken Head",
     "Shrynx",
@@ -64,6 +65,7 @@ PETS_RESCUEABLE = [
     "Snakelet",
     "Snow Bunny",
     "Snowball",
+    "Son of Tau",
     "Spiderling",
     "Squidlet",
     "Swampie",
@@ -93,6 +95,7 @@ PETS_FACTION = [
     "Frog Prince",
     "Hamsterthalamus",
     "Hare-o-Plane",
+    "Ice Jelly",
     "Itsy Bitsy Drider",
     "Joust Mouse",
     "Kobold Kitty",
@@ -107,6 +110,7 @@ PETS_FACTION = [
     "Sad Panda",
     "Semi Deminaga",
     "Sir Ted",
+    "Slightly Judgy",
     "Tiny Dancer",
 ]
 
@@ -154,9 +158,10 @@ PETS_COSMETIC = [
 ]
 
 PETS_UNOBTAINABLE = [
-    "Droid-bot",    # Android Exclusive
-    "Mei",          # Cosmetic, Unknown Source
-    "Steam Puppy",  # Steam Exclusive
+    "Droid-bot",        # Android Exclusive
+    "Mei",              # Cosmetic, Unknown Source
+    "Micro Muffin Pro", # Cosmetic, Unknown Source
+    "Steam Puppy",      # Steam Exclusive
 ]
 
 # List of Pets, current not listed in gowdb.com
