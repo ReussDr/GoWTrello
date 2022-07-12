@@ -245,10 +245,16 @@ class KingdomStats:
                 csv_file.write(str(self._totals[kingdom]['maxed_pets']) + ",")
 
                 # Write Class information
-                csv_file.write(self._totals[kingdom]['class_name'] + ",")
-                csv_file.write(str(self._totals[kingdom]['class_level']) + ",")
-                csv_file.write(str(self._totals[kingdom]['class_sublevel']) + ",")
-                csv_file.write(str(self._totals[kingdom]['class_traitcount']) + ",")
+                if 'class_name' in self._totals[kingdom]:
+                    csv_file.write(self._totals[kingdom]['class_name'] + ",")
+                    csv_file.write(str(self._totals[kingdom]['class_level']) + ",")
+                    csv_file.write(str(self._totals[kingdom]['class_sublevel']) + ",")
+                    csv_file.write(str(self._totals[kingdom]['class_traitcount']) + ",")
+                else:
+                    csv_file.write(",")
+                    csv_file.write(",")
+                    csv_file.write(",")
+                    csv_file.write(",")
 
                 # Write Weapon information
                 csv_file.write(str(self._totals[kingdom]['total_weapons']) + ",")

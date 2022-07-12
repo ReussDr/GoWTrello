@@ -17,9 +17,6 @@ WEAPONS_UNOBTAINABLE = [
     "Campaign 2 Weapon A",          # Broken Spire
     "Campaign 2 Weapon B",          # Broken Spire
     "Campaign 2 Weapon C",          # Broken Spire
-    "Doomed Magi",                  # Broken Spire
-    "Doomed Rod",                   # Broken Spire
-    "Doomed Wand",                  # Broken Spire
     "Green Doomed Weapon",          # Broken Spire
     "Purple Doomed Weapon",         # Broken Spire
     "Red Doomed Weapon",            # Broken Spire
@@ -30,10 +27,8 @@ WEAPONS_UNOBTAINABLE = [
     "Dhrak-Zum Weapon",             # Dhrak-Zum
     "Divinion Fields Weapon",       # Divinion Fields
     "Dragon's Claw Weapon",         # Dragon's Claw
-    "Dragon Tales",                 # Dragon's Claw
     "Drifting Sands Weapon",        # Drifting Sands
     "Forest Weapon",                # Forest of Thorns
-    "Shadow Shot",                  # Forest of Thorns
     "Ghulvania Weapon",             # Ghulvania
     "Glacial Weapon",               # Glacial Peaks
     "Grosh-Nak Weapon",             # Grosh-Nak
@@ -42,12 +37,8 @@ WEAPONS_UNOBTAINABLE = [
     "Khaziel Weapon",               # Khaziel
     "Khetari",                      # Khetar
     "Maugrim Weapon",               # Maugrim Woods
-    "Moonblade",                    # Maugrim Woods
     "Merlantis Weapon",             # Merlantis
     "Mist of Scales Weapon",        # Mist of Scales
-    "Scaleguard Protector",         # Mist of Scales
-    "Indrajit's Claw",	            # Pridelands
-    "Twin Claws",                   # Pridelands
     "Shentang Weapon",              # Shentang
     "Wild Orb",                     # Silverglade
     "Suncrest Weapon",              # Suncrest
