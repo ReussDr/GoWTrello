@@ -4,3 +4,4 @@ config.ini
 inventory.json
 inventory.json_backup
 *.csv
+pat.txt
