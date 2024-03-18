@@ -28,6 +28,7 @@ KINGDOM_FACTION_MAP = {
     "Ghulvania": "Dark Court",
     "Glacial Peaks": "Mirrored Halls",
     "Grosh-Nak": "Dripping Caverns",
+    "Hellcrag": "Obsidian Depths",
     "Karakoth": "Duergaroth",
     "Khaziel": "Emperinazar",
     "Khetar": "Fang Moor",
